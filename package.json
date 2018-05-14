@@ -1,0 +1,23 @@
+{
+  "name": "hs",
+  "version": "1.0.0",
+  "description": "1.cnpm i webpack webpack-cli -D",
+  "main": "webpack.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-es2015": "^6.24.1",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^5.0.0",
+    "gulp-clean-css": "^3.9.4",
+    "gulp-less": "^3.5.0",
+    "gulp-sourcemaps": "^2.6.4",
+    "webpack-stream": "^4.0.3"
+  }
+}

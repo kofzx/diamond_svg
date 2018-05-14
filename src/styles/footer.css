@@ -1,0 +1,10 @@
+footer {
+  background: #302f33;
+}
+footer .footer-info {
+  color: white;
+  padding: 1rem 0;
+}
+footer .footer-info .footer-info__right img {
+  max-width: 6.25rem;
+}

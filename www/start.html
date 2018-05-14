@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>start</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/com.css">
+    <link rel="stylesheet" href="css/start.css">
+    <script src="js/starts/jquery-2.2.3.min.js"></script>
+    <script src="js/starts/velocity.min.js"></script>
+    <script src="js/starts/velocity.ui.js"></script>
+    <style>
+        svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+        
+        .line {
+            fill: none;
+            stroke-width: 2;
+            stroke: rgba(255, 255, 255, 0.3);
+        }
+        
+        .diamond {
+            fill-opacity: 0;
+            stroke-opacity: 0;
+            fill: #55b5f4;
+            animation-name: fade;
+            animation-duration: 1s;
+            animation-timing-function: ease;
+            animation-fill-mode: both;
+        }
+        
+        #diamond1 {
+            animation-delay: 0s;
+        }
+        
+        #diamond2 {
+            animation-delay: 0.9s;
+        }
+        
+        #diamond3 {
+            animation-delay: 1.8s;
+        }
+        
+        #diamond4 {
+            animation-delay: 2.7s;
+        }
+        
+        #diamond5 {
+            animation-delay: 3.6s;
+        }
+        
+        @keyframes fade {
+            100% {
+                stroke-opacity: 1;
+                fill-opacity: 1;
+                fill: #0089e2;
+            }
+        }
+        
+        .htc-text,
+        lang-box {
+            text-align: center;
+            color: white;
+        }
+        
+        .htc-text h1 {
+            font-size: 50px;
+        }
+        
+        .htc-text p {
+            font-size: 22px;
+            margin-top: 33px;
+        }
+        
+        .lang-box {
+            margin-top: 85px;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .lang-box a {
+            font-size: 30px;
+            color: white;
+            text-decoration: none;
+        }
+        
+        .lang-box a:first-child {
+            padding-right: 20px;
+            border-right: 1px solid white;
+        }
+        
+        .lang-box a:last-child {
+            padding-left: 20px;
+            border-left: 1px solid white;
+        }
+        
+        .anim-slideUpIn {
+            animation-name: slideUpIn;
+            animation-duration: 1.5s;
+            animation-timing-function: ease;
+            animation-fill-mode: both;
+        }
+        
+        @keyframes slideUpIn {
+            from {
+                -webkit-transform: translate3d(0, 40px, 0);
+                transform: translate3d(0, 40px, 0);
+                visibility: visible;
+            }
+            to {
+                -webkit-transform: translate3d(0, 0, 0);
+                transform: translate3d(0, 0, 0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <!-- 绘制钻石  （先绘制最上方的钻石） -->
+        <defs>
+            <!-- 径向渐变 -->
+            <radialGradient id="radial" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                <stop offset="0%"   style="stop-color: white; stop-opacity: 0.7" />
+                <stop offset="50%"  style="stop-color: white; stop-opacity: 0.8"/>
+                <stop offset="100%" style="stop-color: white; stop-opacity: 1"/>
+            </radialGradient>
+            <!-- 线性渐变 -->
+            <linearGradient id="linear" x1="0" y1="0" x2="100%" y2="0">
+                <stop offset="0%" style="stop-color: white; stop-opacity: 0.1" />
+                <stop offset="10%" style="stop-color: white; stop-opacity: 0.2" />
+                <stop offset="20%" style="stop-color: white; stop-opacity: 0.3" />
+                <stop offset="35%" style="stop-color: white; stop-opacity: 0.5" />
+                <stop offset="40%" style="stop-color: white; stop-opacity: 0.5" />
+                <stop offset="50%" style="stop-color: white; stop-opacity: 1" />
+                <stop offset="60%" style="stop-color: white; stop-opacity: 0.5" />
+                <stop offset="75%" style="stop-color: white; stop-opacity: 0.5" />
+                <stop offset="80%" style="stop-color: white; stop-opacity: 0.3" />
+                <stop offset="90%" style="stop-color: white; stop-opacity: 0.2" />
+                <stop offset="100%" style="stop-color: white; stop-opacity: 0.1" />
+            </linearGradient>
+            <!-- 模糊效果 -->
+            <filter id="filter" x="0" y="0">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="1.5" />
+            </filter>
+            <!-- 闪光 -->
+            <g id="shine">
+                <!-- 光晕 -->
+                <circle cx="0" cy="0" r="5" fill="url(#radial)" filter="url(#filter)"></circle>
+                <!-- 发光线（本质是椭圆） -->
+                <ellipse cx="0" cy="0" rx="10" ry="0.3" fill="url(#linear)" transform="scale(4)"></ellipse>
+                <ellipse cx="0" cy="0" rx="9" ry="0.3" fill="url(#linear)" transform="scale(4) rotate(45)"></ellipse>
+                <ellipse cx="0" cy="0" rx="10" ry="0.3" fill="url(#linear)" transform="scale(4) rotate(90)"></ellipse>
+                <ellipse cx="0" cy="0" rx="9" ry="0.3" fill="url(#linear)" transform="scale(4) rotate(135)"></ellipse>
+            </g>
+            <!-- 钻石 -->
+            <g id="diamond">
+                <!-- 钻石轮廓 (points由js添加) -->
+                <polygon id="contour" style="fill: inherit; stroke: transparent"></polygon>
+                <!-- 线段一 -->
+                <path id="line1" class="line" />
+                <!-- 线段二 -->
+                <path id="line2" class="line" />
+                <!-- 线段三 -->
+                <path id="line3" class="line" />
+                <!-- 线段四 -->
+                <path id="line4" class="line" />
+                <!-- 线段五 -->
+                <path id="line5" class="line" />
+            </g>    
+        </defs>
+        <!-- 钻石组 -->
+        <g id="diamonds">
+            <use id="diamond1" class="diamond" xlink:href="#diamond" x="0" y="0" />
+            <use id="diamond2" class="diamond" xlink:href="#diamond" x="0" y="0" />
+            <use id="diamond3" class="diamond" xlink:href="#diamond" x="0" y="0" />
+            <use id="diamond4" class="diamond" xlink:href="#diamond" x="0" y="0" />
+            <use id="diamond5" class="diamond" xlink:href="#diamond" x="0" y="0" />
+        </g>
+        <!-- 闪光组 -->
+        <g id="shining">  
+            <!-- js添加闪光 -->
+        </g>
+    </svg>
+    <hGroup class="htc-text o0">
+        <h1>恒泰昌智能卷闸门</h1>
+        <p>Hengtai Chang Intelligent Rolling Gate</p>
+    </hGroup>
+    <div class="lang-box o0">
+        <a href="">中文</a>
+        <a href="">英文</a>
+    </div>
+    <script src="js/svg.js"></script>
+</body>
+
+</html>
