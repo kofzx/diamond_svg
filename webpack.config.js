@@ -1,7 +1,8 @@
 module.exports = {
     entry: {
         index: './src/js/index',
-        svg: './src/js/svg.js'
+        svg:   './src/js/svg.js',
+        svg2:  './src/js/svg2.js'
     },
     output: {
         filename: '[name].js'

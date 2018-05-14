@@ -115,14 +115,6 @@ function pathAnim() {
 
     if (deltaY) {
         deltaY += dy;
-    } else if (deltaY2) {
-        deltaY2 += dy;
-    } else if (deltaY3) {
-        deltaY3 += dy;
-    } else if (deltaY4) {
-        deltaY4 += dy;
-    } else if (deltaY5) {
-        deltaY5 += dy;
     } else {
         // 路径动画完成，执行文本动画
         $(".htc-text").addClass("anim-slideUpIn");
@@ -131,9 +123,9 @@ function pathAnim() {
         }, 500);
     }
     translateDiamond(diamond1, deltaY, 0);
-    translateDiamond(diamond2, deltaY2, perDegree);
-    translateDiamond(diamond3, deltaY3, perDegree * 2);
-    translateDiamond(diamond4, deltaY4, perDegree * 3);
-    translateDiamond(diamond5, deltaY5, perDegree * 4);
+    translateDiamond(diamond2, deltaY, perDegree);
+    translateDiamond(diamond3, deltaY, perDegree * 2);
+    translateDiamond(diamond4, deltaY, perDegree * 3);
+    translateDiamond(diamond5, deltaY, perDegree * 4);
 
 }
