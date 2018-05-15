@@ -1,83 +1,46 @@
-let svg = Snap("#svg");
+import lights from './defs/lights'
+import diamonds from './defs/diamonds'
+import filter from './defs/filter'
+import global from './global/global'
+let { svg } = global.svg;
+let { centerX, centerY } = global.main;
 
-const W = document.documentElement.clientWidth;
-const H = document.documentElement.clientHeight;
-// 中心点的坐标
-const centerX = W / 2;
-const centerY = H / 2 - 120;
+const perDegree = 360 / 5;
 
-// 钻石的偏移量（以最上方钻石为例）
-const MAX_X = 55,
-    MID_X = 28,
-    MIN_X = 25,
-    MAX_Y = 95,
-    MID_Y = 35;
-const a = 1; // 细调常量
+/**
+ * 定义绘制
+ */
 
 // 模糊
-let filter = svg.paper.filter('<feGaussianBlur in="SourceGraphic" stdDeviation="1.5" />');
+filter();
+
+// 闪光组
+let lightsGroup = lights();
+
+// 钻石组
+let diamondsGroup = diamonds();
 
 /**
- * 闪光组
+ * 实际操作
  */
-let lightsGroup = svg.paper.g().attr({
-    id: "shine"
-});
 
-// 光晕
-let halo = svg.paper.circle(0, 0, 5).attr({
-    fill: "url(#radial)",
-    filter: "url(#filter)"
-});
-
-// 发光线
-for(let i = 0; i < 4; i++) {
-    let lightLine = svg.paper.ellipse(0, 0, i % 2 == 0 ? 10 : 9 , 0.3).attr({
-        fill: "url(#linear)",
-        transform: `scale(4) rotate(${i * 45})`
+// use 钻石
+for (let i = 0; i < 5; i++) {
+    let use_diamondsGroup = diamondsGroup.use().attr({
+        class: "diamond",
+        x: 0,
+        y: 0,
+        transform: `rotate(${perDegree * i}, ${centerX}, ${centerY})`
     });
-    lightsGroup.add(lightLine);
+    svg.append(use_diamondsGroup);
 }
 
-lightsGroup.add(halo).toDefs();
-
-/**
- * 钻石组
- */
-let diamondsGroup = svg.paper.g().attr({
-    id: "diamond"
+// 路径动画
+let diamond_collection = svg.selectAll(".diamond");
+Array.from(diamond_collection, (v, i) => {
+    Snap.animate(-100, 0, function(val) {
+        v.attr({
+            transform: `rotate(${perDegree * i}, ${centerX}, ${centerY}) translate(0, ${val})`
+        });
+    }, 1500);
 });
-
-// 钻石填充
-
-let diamondFill = svg.paper.polygon([centerX, centerY, centerX - MAX_X, centerY - MAX_Y, 
-    centerX - MAX_X + MIN_X, centerY - MAX_Y - MID_Y, centerX + MIN_X, centerY - MAX_Y - MID_Y,
-    centerX + MIN_X * 2, centerY - MAX_Y]).attr({
-    fill: "inherit",
-    stroke: "transparent"
-});
-
-// 钻石线条
-const line1 = `M${ centerX - MAX_X + a } ${ centerY - MAX_Y } L${ centerX - MAX_X + MIN_X - a } ${ centerY - MAX_Y }
-                L${centerX} ${centerY - a} L${ centerX + MIN_X + a } ${ centerY - MAX_Y }
-                L${ centerX + MIN_X * 2 - a } ${ centerY - MAX_Y }`,
-      line2 = `M${ centerX - MAX_X + MIN_X } ${ centerY - MAX_Y - MID_Y + a } 
-                L${ centerX - MAX_X + MIN_X + MID_X } ${ centerY - MAX_Y - a }
-                L${ centerX - MAX_X + MIN_X + MID_X * 2 } ${ centerY - MAX_Y - MID_Y + a }`,
-      line3 = `M${ centerX - MAX_X + MIN_X + MID_X } ${ centerY - MAX_Y } L${centerX} ${centerY - 2}`,
-      line4 = `M${ centerX - MAX_X + MIN_X + MID_X - a } ${ centerY - MAX_Y }
-                L${ centerX - MAX_X + MIN_X } ${ centerY - MAX_Y }`,
-      line5 = `M${ centerX - MAX_X + MIN_X + MID_X - a } ${ centerY - MAX_Y }
-                L${ centerX + MIN_X + a } ${ centerY - MAX_Y }`;
-
-let lines = new Array();
-lines.push(line1, line2, line3, line4, line5);
-
-lines.map(v => {
-    let diamondLine = svg.paper.path(v).attr({
-        class: "line"
-    });
-    diamondsGroup.add(diamondLine);
-});
-
-diamondsGroup.add(diamondFill).toDefs();
