@@ -1,6 +1,8 @@
 import global from '../global/global'
 let { paper } = global.svg;
 
+let blurry = paper.filter(Snap.filter.blur(5));
+
 module.exports = function() {
     /**
      * 闪光组
@@ -12,7 +14,7 @@ module.exports = function() {
     // 光晕
     let halo = paper.circle(0, 0, 5).attr({
         fill: "url(#radial)",
-        filter: "url(#filter)"
+        filter: blurry
     });
 
     // 发光线

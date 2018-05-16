@@ -64,7 +64,9 @@
 /******/ })
 /************************************************************************/
 /******/ ([
-/* 0 */
+/* 0 */,
+/* 1 */,
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -109,8 +111,6 @@ var global = {
 module.exports = global;
 
 /***/ }),
-/* 1 */,
-/* 2 */,
 /* 3 */,
 /* 4 */,
 /* 5 */,
@@ -130,11 +130,7 @@ var _diamonds = __webpack_require__(10);
 
 var _diamonds2 = _interopRequireDefault(_diamonds);
 
-var _filter = __webpack_require__(11);
-
-var _filter2 = _interopRequireDefault(_filter);
-
-var _global = __webpack_require__(0);
+var _global = __webpack_require__(2);
 
 var _global2 = _interopRequireDefault(_global);
 
@@ -151,9 +147,6 @@ var perDegree = 360 / 5;
 /**
  * 定义绘制
  */
-
-// 模糊
-(0, _filter2.default)();
 
 // 闪光组
 var lightsGroup = (0, _lights2.default)();
@@ -178,13 +171,81 @@ for (var i = 0; i < 5; i++) {
 
 // 路径动画
 var diamond_collection = svg.selectAll(".diamond");
+var pathAnim_complete = false; // 路径动画完成的标志
 Array.from(diamond_collection, function (v, i) {
     Snap.animate(-100, 0, function (val) {
         v.attr({
             transform: 'rotate(' + perDegree * i + ', ' + centerX + ', ' + centerY + ') translate(0, ' + val + ')'
         });
-    }, 1500);
+    }, 1500, function () {
+        pathAnim_complete = true;
+    });
 });
+
+// use 闪光
+// let use_lightsGroup = lightsGroup.use().attr({
+//     class: "shining",
+//     x: 557,
+//     y: 250
+// });
+// svg.append(use_lightsGroup);
+
+var shining_collection = svg.selectAll(".shining");
+
+// 原地闪光
+function shineInPlace() {
+    shining_collection[0].animate({
+        transform: 'translate(557, 250) scale(1.5) translate(-557, -250)'
+    }, 400, mina.easein, function () {
+        this.animate({
+            transform: 'translate(557, 250) scale(1) translate(-557, -250)'
+        }, 400, mina.easein, function () {
+            shineInPlace();
+        });
+    });
+}
+// 太闪了，休息一下
+// shineInPlace();
+
+var line_collection = svg.selectAll(".line");
+// 线条动画 
+
+// 获取每条路径的长度， 并且设置stroke-dasharray、stroke-dashoffset的值
+Array.from(line_collection, function (v) {
+    var totalLength = v.getTotalLength();
+    v.attr({
+        strokeDasharray: totalLength,
+        strokeDashoffset: totalLength
+    });
+});
+
+function lineAnim() {
+    line_collection[0].animate({
+        strokeDashoffset: 0
+    }, 1200, function () {
+        line_collection[1].animate({
+            strokeDashoffset: 0
+        }, 1000, function () {
+            line_collection[2].animate({
+                strokeDashoffset: 0
+            }, 600, function () {
+                line_collection[3].animate({
+                    strokeDashoffset: 0
+                }, 500);
+                line_collection[4].animate({
+                    strokeDashoffset: 0
+                }, 500);
+            });
+        });
+    });
+}
+
+var timer = setInterval(function () {
+    if (pathAnim_complete) {
+        lineAnim();
+        clearInterval(timer);
+    }
+}, 100);
 
 /***/ }),
 /* 9 */
@@ -193,7 +254,7 @@ Array.from(diamond_collection, function (v, i) {
 "use strict";
 
 
-var _global = __webpack_require__(0);
+var _global = __webpack_require__(2);
 
 var _global2 = _interopRequireDefault(_global);
 
@@ -201,6 +262,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var paper = _global2.default.svg.paper;
 
+
+var blurry = paper.filter(Snap.filter.blur(5));
 
 module.exports = function () {
     /**
@@ -213,7 +276,7 @@ module.exports = function () {
     // 光晕
     var halo = paper.circle(0, 0, 5).attr({
         fill: "url(#radial)",
-        filter: "url(#filter)"
+        filter: blurry
     });
 
     // 发光线
@@ -237,7 +300,7 @@ module.exports = function () {
 "use strict";
 
 
-var _global = __webpack_require__(0);
+var _global = __webpack_require__(2);
 
 var _global2 = _interopRequireDefault(_global);
 
@@ -292,26 +355,6 @@ module.exports = function () {
     });
 
     return diamondsGroup;
-};
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _global = __webpack_require__(0);
-
-var _global2 = _interopRequireDefault(_global);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var paper = _global2.default.svg.paper;
-
-
-module.exports = function () {
-    var filter = paper.filter('<feGaussianBlur in="SourceGraphic" stdDeviation="1.5" />');
 };
 
 /***/ })

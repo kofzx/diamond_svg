@@ -64,8 +64,7 @@
 /******/ })
 /************************************************************************/
 /******/ ([
-/* 0 */,
-/* 1 */
+/* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -75,7 +74,7 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _toolkit = __webpack_require__(2);
+var _toolkit = __webpack_require__(1);
 
 var _toolkit2 = _interopRequireDefault(_toolkit);
 
@@ -270,7 +269,7 @@ var Light = function () {
 module.exports = Light;
 
 /***/ }),
-/* 2 */
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -297,6 +296,7 @@ var toolkit = {
 module.exports = toolkit;
 
 /***/ }),
+/* 2 */,
 /* 3 */,
 /* 4 */,
 /* 5 */,
@@ -306,7 +306,7 @@ module.exports = toolkit;
 "use strict";
 
 
-var _light = __webpack_require__(1);
+var _light = __webpack_require__(0);
 
 var _light2 = _interopRequireDefault(_light);
 
